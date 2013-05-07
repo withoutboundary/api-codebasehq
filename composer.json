@@ -1,0 +1,14 @@
+{
+	"name": "withoutboundary/api-codebasehq",
+	"type": "library",
+	"keywords": ["api", "codebase", "codebasehq", "codebase api", "codebasehq api"],
+	"require": {
+		"php": ">=5.3.0"
+	},
+	"autoload": {
+		"psr-0": {
+				"CodebaseHq": "src/",
+				"CodebaseHqTest": "tests/"
+		}
+	}
+}
