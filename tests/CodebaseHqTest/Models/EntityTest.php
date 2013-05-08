@@ -2,8 +2,8 @@
 
 namespace CodebaseHqTest\Models;
 
-use CodebaseHq\Models\Entity as Entity;
-use CodebaseHqTest\Mocks\Models\MockEntity as MockEntity;
+use CodebaseHq\Models\Entity;
+use CodebaseHqTest\Mocks\Models\MockEntity;
 
 class EntityTest extends \PHPUnit_Framework_TestCase
 {
@@ -67,6 +67,12 @@ EOF;
 </mock-entity>
 EOF;
 		
+		$expectingEntityWithKeyFooBar = <<<EOF
+<mock-entity>
+	<foo-bar>bar</foo-bar>
+</mock-entity>
+EOF;
+		
 		$this->assertEquals(null, MockEntity::unserialize($expectingNull));
 		
 		$unserialised = MockEntity::unserialize($expectingEntity);
@@ -79,6 +85,11 @@ EOF;
 		$this->assertInstanceOf('CodebaseHqTest\Mocks\Models\MockEntity', $unserialised);
 		$this->assertEquals('bar', $unserialised->foo);
 		$this->assertObjectNotHasAttribute('cake', $unserialised);
+		
+		$unserialised = MockEntity::unserialize($expectingEntityWithKeyFooBar);
+		
+		$this->assertInstanceOf('CodebaseHqTest\Mocks\Models\MockEntity', $unserialised);
+		$this->assertEquals('bar', $unserialised->fooBar);
 	}
 	
 	public function testSetProperties()

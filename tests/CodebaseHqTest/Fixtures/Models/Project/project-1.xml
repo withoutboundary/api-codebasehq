@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <project-id type="integer">50569</project-id>
+  <group-id nil="true"/>
+  <icon type="integer">1</icon>
+  <name>Project 1</name>
+  <overview nil="true"/>
+  <start-page>overview</start-page>
+  <status>active</status>
+  <permalink>project-1</permalink>
+</project>

@@ -7,5 +7,7 @@ use CodebaseHq\Models\Entity as Entity;
 class MockEntity extends Entity
 {
 	static protected $entityName = 'mock-entity';
-	static protected $propertyList = array('foo', 'bar', 'cake');
+	static protected $propertyList = array('foo', 'bar', 'cake', 'fooBar');
+	
+	protected $properties = array();
 }

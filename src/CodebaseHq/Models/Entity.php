@@ -23,7 +23,7 @@ abstract class Entity
 	{
 		foreach (static::$propertyList as $key)
 		{
-			if (isset($properties[$key]))
+			if (array_key_exists($key, $properties))
 			{
 				$this->properties[$key] = $properties[$key];
 			}
@@ -69,13 +69,24 @@ abstract class Entity
 	}
 	
 	/**
-	* Unserialises, from XML, into this Entity
+	* Unserialises, from XML, a single object into this Entity
 	* 
-	* @param string xml
+	* @param mixed xml string or \SimpleXMLElement
 	*/
-	static public function unserialize($xml = null)
+	static public function unserialize($xml)
 	{
-		$object = simplexml_load_string($xml);
+		if (is_string($xml))
+		{
+			$object = simplexml_load_string($xml);
+		}
+		elseif ('SimpleXMLElement' === get_class($xml))
+		{
+			$object = $xml;
+		}
+		else
+		{
+			throw new \RuntimeException('Invalid parameter $xml, should be string or SimpleXMLElement');
+		}
 		
 		$calledClass = get_called_class();
 		$class = current(array_reverse(explode('\\', strtolower($calledClass))));
@@ -85,9 +96,21 @@ abstract class Entity
 			$properties = array();
 			foreach (static::$propertyList as $key)
 			{
-				if (isset($object->{$key}))
+				$translatedKey = static::translatePropertyKey($key);
+				if (isset($object->{$translatedKey}))
 				{
-					$properties[$key] = (string) $object->{$key};
+					if (isset($object->{$translatedKey}['nil']) && 'true' === strtolower($object->{$translatedKey}['nil']))
+					{
+						$properties[$key] = null;
+					}
+					elseif ((isset($object->{$translatedKey}['type']) && 'integer' === strtolower($object->{$translatedKey}['type'])))
+					{
+						$properties[$key] = (int) $object->{$translatedKey};
+					}
+					else
+					{
+						$properties[$key] = (string) $object->{$translatedKey};
+					}
 				}
 			}
 			
@@ -95,6 +118,18 @@ abstract class Entity
 		}
 		
 		return null;
+	}
+	
+	static public function unserializeList($xml, $root)
+	{
+		$xml = simplexml_load_string($xml);
+		$list = array();
+		
+		foreach ($xml as $entity)
+		{
+			$list[] = static::unserialize($entity);
+		}
+		return $list;
 	}
 	
 	/**

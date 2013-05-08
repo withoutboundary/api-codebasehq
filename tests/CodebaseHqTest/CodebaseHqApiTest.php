@@ -146,6 +146,10 @@ class CodebaseHqApiTest extends \PHPUnit_Framework_TestCase
 		$this->assertTrue($exception, 'A RuntimeException should be thrown for "example.com/foo", there should be no path');
 	}
 	
+	/*public function testRequest()
+	{
+	}*/
+	
 	/**
 	* This should not throw any exceptions
 	*/

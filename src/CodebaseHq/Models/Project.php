@@ -2,13 +2,14 @@
 
 namespace CodebaseHq\Models;
 
-use \CodebaseHq\Api as Api;
-use \CodebaseHq\Models\Entity as Entity;
+use \CodebaseHq\CodebaseHqApi;
+use \CodebaseHq\Models\Entity;
 
 class Project extends Entity
 {
-	protected $entityName = 'project';
-	protected $properties = array(
+	static protected $entityName = 'project';
+	static protected $propertyList = array(
+		'projectId',
 		'name',
 		'permalink',
 		'groupId',
@@ -18,23 +19,24 @@ class Project extends Entity
 		'icon',
 	);
 	
-	public function __construct($properties)
+	static public function getList(CodebaseHqApi $api)
+	{
+		$response = $api->request('projects', CodebaseHqApi::METHOD_GET);
+		
+		$list = static::unserializeList($response, 'projects');
+		
+		return $list;
+	}
+	
+	static public function create(CodebaseHqApi $api, Project $project)
 	{
 	}
 	
-	static public function getAll(Api $api, $conditions)
+	static public function read(CodebaseHqApi $api, $permalink)
 	{
 	}
 	
-	static public function get(Api $api, $conditions)
-	{
-	}
-	
-	static public function create(Api $api, Project $project)
-	{
-	}
-	
-	static public function delete(Api $api, Project $project)
+	static public function delete(CodebaseHqApi $api, Project $project)
 	{
 	}
 }

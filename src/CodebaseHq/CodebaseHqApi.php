@@ -4,6 +4,10 @@ namespace CodebaseHq;
 
 class CodebaseHqApi
 {
+	const METHOD_GET = 'GET';
+	const METHOD_POST = 'POST';
+	const METHOD_DELETE = 'DELETE';
+	
 	protected $defaults = array(
 		'username' => '',
 		'token' => '',
@@ -87,8 +91,25 @@ class CodebaseHqApi
 		return false;
 	}
 	
-	public function request()
+	/**
+	* Makes the call to CodebaseHQ
+	* 
+	* @param string $endpoint the url path for this call eg. "projects"
+	* @param mixed $method 	the HTTP method for this call (default is GET, use the
+	* 											constants)
+	* @param mixed $data 	xml from a serialised CodebaseHq\Models\Entity object or
+	* 										descendent/child object
+	* @return string xml return result from the api call 
+	*/
+	public function request($endpoint, $method = null, $data = null)
 	{
+		if (null === $method)
+		{
+			$method = self::METHOD_GET;
+		}
 		
+		$xml = null;
+		
+		return $xml;
 	}
 }
